@@ -13,7 +13,7 @@ export default function Home() {
 
       <h1>Netflix</h1>
 
-      <NavBar username="ankita@ank.com" />
+      <NavBar username="ritikasrivastava5439@gmail.com" />
       <Banner
         title="Clifford the red dog"
         subTitle="a very cute dog"

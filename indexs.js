@@ -11,7 +11,7 @@ export default function Home() {
         <title>Netflix</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar username="ankita@ank.com" />
+      <NavBar username="ritika@123.com" />
       <Banner
         title="Clifford the red dog"
         subTitle="a very cute dog"
@@ -19,10 +19,9 @@ export default function Home() {
       />
 
       <SectionCards title="Disney" />
-
-      <Card imgUrl="/static/clifford.webp" size="large" />
-      <Card size="medium" />
-      <Card imgUrl="/static/clifford.webp" size="small" />
+      <div className={styles.sectionWrapper}>
+        <SectionCards title="Disney" />
+      </div>
     </div>
   );
 }

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Image from "next/image";
@@ -12,6 +14,19 @@ const Login = () => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    const handleComplete = () => {
+      setIsLoading(false);
+    };
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  }, [router]);
+
   const handleOnChangeEmail = (e) => {
     setUserMsg("");
     console.log("event", e);
@@ -22,9 +37,8 @@ const Login = () => {
     console.log("hi button");
     e.preventDefault();
     setIsLoading(true);
-
     if (email) {
-      if (email === "ritikasrivastava5439@gmail.com") {
+      if (email === "ritkasrivastava5439@gmail.com") {
         //  log in a user by their email
         try {
           const didToken = await magic.auth.loginWithMagicLink({
@@ -80,10 +94,8 @@ const Login = () => {
             className={styles.emailInput}
             onChange={handleOnChangeEmail}
           />
-
           <p className={styles.userMsg}>{userMsg}</p>
           <button onClick={handleLoginWithEmail} className={styles.loginBtn}>
-            Sign In
             {isLoading ? "Loading..." : "Sign In"}
           </button>
         </div>

@@ -2,20 +2,29 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Banner from "../components/banner/banner";
 import NavBar from "../components/nav/navbar";
-import Card from "../components/card/card";
 import SectionCards from "../components/card/section-cards";
-import { getPopularVideos, getVideos } from "../lib/videos";
-
-import { magic } from "../lib/magic-client";
-import { startFetchMyQuery } from "../lib/db/hasura";
-
+import {
+  getPopularVideos,
+  getVideos,
+  getWatchItAgainVideos,
+} from "../lib/videos";
 export async function getServerSideProps(context) {
+  const userId = "";
+  const token = "";
+  const watchItAgainVideos = await getWatchItAgainVideos(userId, token);
+  console.log({ watchItAgainVideos });
   const disneyVideos = await getVideos("disney trailer");
   const productivityVideos = await getVideos("Productivity");
   const travelVideos = await getVideos("indie music");
   const popularVideos = await getPopularVideos();
   return {
-    props: { disneyVideos, travelVideos, productivityVideos, popularVideos },
+    props: {
+      disneyVideos,
+      travelVideos,
+      productivityVideos,
+      popularVideos,
+      watchItAgainVideos,
+    },
   };
 }
 export default function Home({
@@ -23,8 +32,9 @@ export default function Home({
   travelVideos,
   productivityVideos,
   popularVideos,
+  watchItAgainVideos,
 }) {
-  startFetchMyQuery();
+  console.log({ watchItAgainVideos });
   return (
     <div className={styles.container}>
       <Head>
@@ -39,8 +49,14 @@ export default function Home({
           subTitle="a very cute dog"
           imgUrl="/static/clifford.webp"
         />
+
         <div className={styles.sectionWrapper}>
           <SectionCards title="Disney" videos={disneyVideos} size="large" />
+          <SectionCards
+            title="Watch it again"
+            videos={watchItAgainVideos}
+            size="small"
+          />
           <SectionCards title="Travel" videos={travelVideos} size="small" />
           <SectionCards
             title="Productivity"

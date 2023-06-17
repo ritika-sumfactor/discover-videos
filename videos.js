@@ -1,5 +1,7 @@
 import videoTestData from "../data/videos.json";
 import { getWatchedVideos } from "./db/hasura";
+import { getMyListVideos, getWatchedVideos } from "./db/hasura";
+
 const fetchVideos = async (url) => {
   const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
   const BASE_URL = "youtube.googleapis.com/youtube/v3";
@@ -23,7 +25,6 @@ export const getCommonVideos = async (url) => {
       const snippet = item.snippet;
       return {
         title: snippet?.title,
-        imgUrl: item.snippet.thumbnails.high.url,
         imgUrl: `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
         id,
         description: snippet.description,
@@ -53,6 +54,18 @@ export const getYoutubeVideoById = (videoId) => {
 };
 export const getWatchItAgainVideos = async (userId, token) => {
   const videos = await getWatchedVideos(userId, token);
+  return (
+    videos?.map((video) => {
+      return {
+        id: video.videoId,
+        imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+      };
+    }) || []
+  );
+};
+
+export const getMyList = async (userId, token) => {
+  const videos = await getMyListVideos(userId, token);
   return (
     videos?.map((video) => {
       return {
